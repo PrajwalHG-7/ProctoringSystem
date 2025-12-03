@@ -1,0 +1,107 @@
+# =============================
+#        OS / EDITOR
+# =============================
+.DS_Store
+Thumbs.db
+
+# VS Code settings (keep only specific files)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# =============================
+#          PYTHON
+# =============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# Virtual environments
+venv/
+myvenv/
+env/
+.venv/
+env*/
+venv*/
+ENV/
+
+# Python environment files
+*.env
+
+# Jupyter
+.ipynb_checkpoints
+*.ipynb
+
+# =============================
+#       NODE BACKEND
+# =============================
+backend/node_modules/
+backend/dist/
+backend/build/
+
+# Backend logs
+backend/*.log
+backend/logs/
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+
+# Backend environment
+backend/.env
+backend/.env.*
+
+# =============================
+#      NODE FRONTEND (React)
+# =============================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.parcel-cache/
+
+# Frontend logs
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Frontend env
+frontend/.env
+frontend/.env.*
+
+# React/Tailwind/TS cache
+frontend/.eslintcache
+frontend/.turbo/
+frontend/.next/
+frontend/.swc/
+frontend/*.tsbuildinfo
+
+# =============================
+#      GLOBAL AT ROOT
+# =============================
+.env
+.env.*
+*.log
+logs/
+
+# Optional: ignore lock files if you don’t want them in Git
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# =============================
+#     OPTIONAL (MEDIA)
+# =============================
+# WARN: ignoring all images/videos may break your UI if required by frontend
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.mp4
+*.avi
+*.mov
+
+datasets/
+uploads/

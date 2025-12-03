@@ -1,0 +1,71 @@
+import ExamData from "../models/ExamData.js"
+import User from "../models/User.js"
+import Exam from "../models/Exam.js"
+
+export const fetchAllExams = async (req, res) => {
+    if (req.user.role === "teacher") {
+        return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    const studentId = req.user.id
+
+    try {
+        const examData = await ExamData.find({ studentId })
+        res.json(examData)
+    } catch (err) {
+        res
+            .status(500)
+            .json({ message: "Server Error", error: err.message })
+    }
+}
+
+export const startExam = async (req, res) => {
+    if (req.user.role === "teacher") {
+        return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    const { examId } = req.params
+
+    try {
+        const exam = await Exam.findById(examId)
+        res.json(exam)
+    } catch (err) {
+        res
+            .status(500)
+            .json({ message: "Server Error", error: err.message })
+    }
+}
+
+export const submitExam = async (req, res) => {
+    if (req.user.role === "teacher") {
+        return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    const { examId, score, cheatCount } = req.body
+
+    try {
+        const totalScore = await Exam.findById(examId).select("totalScore")
+
+        const examData = await ExamData.create({ studentId: req.user.id, examId, score, totalScore: totalScore.totalScore, cheatCount })
+        res.json(examData)
+    } catch (err) {
+        res
+            .status(500)
+            .json({ message: "Server Error", error: err.message })
+    }
+}
+
+export const getStudentData = async (req, res) => {
+    if (req.user.role === "teacher") {
+        return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    try {
+        const user = await User.findById(req.user.id)
+        res.json(user)
+    } catch (err) {
+        res
+            .status(500)
+            .json({ message: "Server Error", error: err.message })
+    }
+}
