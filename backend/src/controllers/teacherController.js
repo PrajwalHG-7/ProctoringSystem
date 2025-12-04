@@ -1,6 +1,7 @@
 import Exam from "../models/Exam.js"
 import ExamData from "../models/ExamData.js"
 import User from "../models/User.js"
+import { getUserInfo } from "./authController.js"
 
 export const addExam = async (req, res) => {
     if (req.user.role === "student") {
@@ -38,9 +39,8 @@ export const fetchAllExams = async (req, res) => {
         return res.status(401).json({ message: "Unauthorized" })
     }
 
-    const userId = req.user.id
-
     try {
+        const userId = req.user.id
         const exams = await Exam.find({ userId })
         res.json(exams)
     } catch (err) {
@@ -55,9 +55,8 @@ export const fetchExamData = async (req, res) => {
         return res.status(401).json({ message: "Unauthorized" })
     }
 
-    const { examId } = req.params
-
     try {
+        const { examId } = req.params
         const examEntries = await ExamData.find({ examId })
             .populate({ path: "studentId", select: "fullName email" })
             .lean();
@@ -82,13 +81,31 @@ export const fetchExamData = async (req, res) => {
     }
 }
 
+export const deleteExam = async (req, res) => {
+    if (req.user.role === "student") {
+        return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    try {
+        const { examId } = req.params
+        const deletedExamData = await ExamData.findByIdAndDelete({ examId })
+        const deletedExam = await Exam.findByIdAndDelete({ examId })
+
+        return res.json({ message: "Deleted Exam: \n", deletedExam })
+    } catch (err) {
+        res
+            .status(500)
+            .json({ message: "Server Error", error: err.message })
+    }
+}
+
 export const getTeacherData = async (req, res) => {
     if (req.user.role === "student") {
         return res.status(401).json({ message: "Unauthorized" })
     }
 
     try {
-        const user = await User.findById(req.user.id)
+        const user = getUserInfo()
         res.json(user)
     } catch (err) {
         res

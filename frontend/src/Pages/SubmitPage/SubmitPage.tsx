@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { StopBackend } from "../../Services/BackendSwitch"
+import { StopBackend } from "../../aiServices/aiBackendSwitch"
 
 const SubmitPage = () => {
     StopBackend()

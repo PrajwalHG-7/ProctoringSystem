@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { StartBackend } from "../../Services/BackendSwitch";
-import useCheatData, { connectWS, closeWS } from "../../Services/CheatData";
+import { StartBackend } from "../../aiServices/aiBackendSwitch";
+import useCheatData, { connectWS, closeWS } from "../../aiServices/CheatData";
 import CheatAlert from "./CheatAlert";
 import Instructions from "./Instructions";
 import Questions from "./Questions";

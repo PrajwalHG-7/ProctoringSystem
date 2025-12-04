@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core"
-import Header from "../../Components/Header/Header"
+import Header from "../../components/Header/Header"
 import { Link } from "react-router-dom"
 
 const StartPage = () => {

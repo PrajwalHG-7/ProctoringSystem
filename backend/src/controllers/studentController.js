@@ -1,6 +1,7 @@
 import ExamData from "../models/ExamData.js"
 import User from "../models/User.js"
 import Exam from "../models/Exam.js"
+import { getUserInfo } from "./authController.js"
 
 export const fetchAllExams = async (req, res) => {
     if (req.user.role === "teacher") {
@@ -61,7 +62,7 @@ export const getStudentData = async (req, res) => {
     }
 
     try {
-        const user = await User.findById(req.user.id)
+        const user = getUserInfo()
         res.json(user)
     } catch (err) {
         res

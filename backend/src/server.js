@@ -1,11 +1,17 @@
-import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import dotenv from 'dotenv';
-import healthRoutes from './routes/healthRoute.js';
-import authRoutes from './routes/authRoutes.js';
+import express from 'express';
+import { fileURLToPath } from "url";
 import connectDB from './config/db.js';
+import authRoutes from './routes/authRoutes.js';
+import healthRoutes from './routes/healthRoute.js';
 import teacherRoutes from './routes/teacherRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config();
 
 const app = express();
@@ -19,9 +25,11 @@ app.use(express.json());
 
 // Routes
 app.use('/api', healthRoutes);
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/t', teacherRoutes);
-app.use('/api/v1/s', studentRoutes);
+app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/t', teacherRoutes)
+app.use('/api/v1/s', studentRoutes)
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 app.get('/', (req, res) => {
     res.send('Server is running');

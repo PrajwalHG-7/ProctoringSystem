@@ -19,7 +19,7 @@ module.exports = {
           '900': '#3d3d3d',
           '950': '#2d2d2d',
         },
-        
+
         'bright-sun': {
           '50': '#fffbeb',
           '100': '#fff3c6',
@@ -33,7 +33,8 @@ module.exports = {
           '900': '#7a330d',
           '950': '#461902',
         },
-
+        primary: "#ffbd20",
+        primary1: "#f99b07",
 
       }
     },
