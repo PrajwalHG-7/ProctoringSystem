@@ -49,10 +49,10 @@ function App() {
 						<Routes>
 							<Route path="/" element={<Root />} />
 							<Route path="/login" element={<Login />} />
-							<Route path="/signUp" element={<SignUp />} />
+							<Route path="/signup" element={<SignUp />} />
 							<Route path="/dashboard" element={<Home />} />
 							<Route path="/start" element={<StartPage />} />
-							<Route path="/test/:emaxId" element={<TestPage />} />
+							<Route path="/test/:examId" element={<TestPage />} />
 							<Route path="/submit" element={<SubmitPage />} />
 						</Routes>
 

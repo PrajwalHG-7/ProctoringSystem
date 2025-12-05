@@ -6,7 +6,7 @@ const generateToken = (id) => {
 }
 
 export const registerUser = async (req, res) => {
-    const { fullName, email, password, role } = req.body
+    const { fullName, email, password, role, profileImageUrl } = req.body
 
     if (!fullName || !email || !password || !role) {
         return res.status(400).json({ message: "All fields are required" })
@@ -24,6 +24,7 @@ export const registerUser = async (req, res) => {
             email,
             password,
             role,
+            profileImageUrl,
         })
 
         res.status(201).json({

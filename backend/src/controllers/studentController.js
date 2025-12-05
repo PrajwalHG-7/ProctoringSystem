@@ -2,6 +2,7 @@ import ExamData from "../models/ExamData.js"
 import User from "../models/User.js"
 import Exam from "../models/Exam.js"
 import { getUserInfo } from "./authController.js"
+import mongoose from "mongoose"
 
 export const fetchAllExams = async (req, res) => {
     if (req.user.role === "teacher") {
@@ -21,11 +22,16 @@ export const fetchAllExams = async (req, res) => {
 }
 
 export const startExam = async (req, res) => {
+
     if (req.user.role === "teacher") {
         return res.status(401).json({ message: "Unauthorized" })
     }
 
     const { examId } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(examId)) {
+        return res.status(400).json({ message: "Invalid Exam ID" });
+    }
 
     try {
         const exam = await Exam.findById(examId)

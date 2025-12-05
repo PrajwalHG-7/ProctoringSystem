@@ -20,7 +20,20 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = process.env.CLIENT_URLS?.split(",") || [];
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS: Not allowed by origin"));
+        }
+    },
+    credentials: true
+}));
+
 app.use(express.json());
 
 // Routes

@@ -15,7 +15,6 @@ export const API_PATHS = {
     },
     STUDENT: {
         GET_DATA: "/api/v1/s/dashboard",
-        START_EXAM: "/api/v1/s/start/:exmaId",
         SUBMIT_EXAM: "/api/v1/s/submit",
         GET_ALL_EXAMS: "/api/v1/s/exam",
     },

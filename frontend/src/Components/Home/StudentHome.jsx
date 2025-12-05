@@ -1,14 +1,12 @@
 import React, { useState } from "react"
 import Input from "../inputs/Input"
-import axiosInstance from "../../utils/axiosInstance"
-import { API_PATHS } from "../../utils/apiPaths"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Modal from "../Modal"
 
 const StudentHome = () => {
     const [examId, setExamId] = useState("")
     const [error, setError] = useState("")
-    const navigate = Navigate()
+    const navigate = useNavigate()
 
     const handleSubmit = async () => {
         try {
@@ -24,25 +22,19 @@ const StudentHome = () => {
     }
 
     return (
-        <div className="flex ">
-            <div className="">
+        <div className="flex w-full min-h-[81vh] gap-4 items-center justify-center">
+            <div className="w-1/2">
                 <Input
                     type="text"
                     label="Exam Code"
                     placeholder="Enter a exam code"
-                    onChange={(target) => setExamId(target)}
+                    onChange={({ target }) => setExamId(target.value)}
                 />
-            </div>
 
-            <div className="">
                 <button
                     type="button"
                     className='btn-primary'
-                    onClick={
-                        <Modal>
-
-                        </Modal>
-                    }
+                    onClick={handleSubmit}
                 >
                     Find Exam
                 </button>
