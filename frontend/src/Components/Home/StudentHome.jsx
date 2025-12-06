@@ -2,8 +2,9 @@ import React, { useState } from "react"
 import Input from "../inputs/Input"
 import { useNavigate } from "react-router-dom"
 import Modal from "../Modal"
+import SPastExams from "../PastExams/SPastExams"
 
-const StudentHome = () => {
+const StudentHome = ({ studentId }) => {
     const [examId, setExamId] = useState("")
     const [error, setError] = useState("")
     const navigate = useNavigate()
@@ -22,8 +23,8 @@ const StudentHome = () => {
     }
 
     return (
-        <div className="flex w-full min-h-[81vh] gap-4 items-center justify-center">
-            <div className="w-1/2">
+        <div className="flex w-full min-h-[81vh] gap-4">
+            <div className="w-2/5 p-10 flex flex-col gap-4 items-center justify-center">
                 <Input
                     type="text"
                     label="Exam Code"
@@ -39,6 +40,8 @@ const StudentHome = () => {
                     Find Exam
                 </button>
             </div>
+
+            <SPastExams />
         </div>
     )
 }

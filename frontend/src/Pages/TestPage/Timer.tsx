@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Timer = ({ time }: { time?: number }) => {
+const Timer = ({ time, onTimeUp }: { time?: number, onTimeUp?: () => void }) => {
     const navigate = useNavigate();
 
     const [timeLeft, setTimeLeft] = useState(0);
@@ -16,7 +16,7 @@ const Timer = ({ time }: { time?: number }) => {
     useEffect(() => {
         if (timeLeft <= 0 || timeLeft === null) return;
 
-        if (timeLeft === 0 && !timeUpHandled) {
+        if (timeLeft === 1 && !timeUpHandled) {
             setTimeUpHandled(true);
 
             window.cameraStream?.getTracks().forEach(track => track.stop());
@@ -24,7 +24,8 @@ const Timer = ({ time }: { time?: number }) => {
 
             setTimeout(() => {
                 alert("Time Up, Test ended");
-                navigate('/submit');
+                onTimeUp?.();
+                navigate("/submit");
                 window.location.reload();
             }, 100);
 

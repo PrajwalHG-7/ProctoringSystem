@@ -17,6 +17,7 @@ import { Toaster } from 'react-hot-toast'
 import Home from './pages/Dashboard/Home'
 import Login from './pages/Auth/Login'
 import SignUp from './pages/Auth/SignUp'
+import CreateExamPage from './pages/CreateExam/CreateExamPage'
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
 							<Route path="/dashboard" element={<Home />} />
 							<Route path="/start" element={<StartPage />} />
 							<Route path="/test/:examId" element={<TestPage />} />
+							<Route path="/create" element={<CreateExamPage />} />
 							<Route path="/submit" element={<SubmitPage />} />
 						</Routes>
 

@@ -51,9 +51,9 @@ export const submitExam = async (req, res) => {
     const { examId, score, cheatCount } = req.body
 
     try {
-        const totalScore = await Exam.findById(examId).select("totalScore")
+        const exam = await Exam.findById(examId).select("examName totalScore")
 
-        const examData = await ExamData.create({ studentId: req.user.id, examId, score, totalScore: totalScore.totalScore, cheatCount })
+        const examData = await ExamData.create({ studentId: req.user.id, examId, examName: exam.examName, score, totalScore: exam.totalScore, cheatCount })
         res.json(examData)
     } catch (err) {
         res

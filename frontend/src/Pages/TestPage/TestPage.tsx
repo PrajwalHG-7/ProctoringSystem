@@ -19,12 +19,10 @@ const TestPage = () => {
     const [exam, setExam] = useState<any>({});
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Stores user's answers: { 0: "String", 1: "const", ... }
     const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: string }>({});
 
     const { cheat, cheat_count, cheat_percentage } = useCheatData(backendStarted);
 
-    // Fetch exam data
     const fetchExamData = async () => {
         try {
             const res = await axiosInstance.get(`/api/v1/s/start/${examId}`);
@@ -38,7 +36,6 @@ const TestPage = () => {
         fetchExamData();
     }, [examId]);
 
-    // AI backend init
     useEffect(() => {
         StartBackend()
             .then(async () => {
@@ -50,7 +47,6 @@ const TestPage = () => {
         return () => closeWS();
     }, []);
 
-    // Cheating alert handler
     useEffect(() => {
         if (cheat) {
             setShowAlert(true);
@@ -59,20 +55,15 @@ const TestPage = () => {
         }
     }, [cheat]);
 
-    // ---------------------------------------
-    // 🔥 SUBMIT LOGIC
-    // ---------------------------------------
     const handleSubmit = async () => {
         if (!exam.questionData) return;
 
-        // 1️⃣ Calculate Score
         let score = 0;
         exam.questionData.forEach((q: any, index: number) => {
             if (selectedAnswers[index] === q.correctOption)
                 score += exam.scorePerQuestion;
         });
 
-        // 2️⃣ Call backend
         try {
             await axiosInstance.post(API_PATHS.STUDENT.SUBMIT_EXAM, {
                 examId,
@@ -81,7 +72,7 @@ const TestPage = () => {
             });
 
             alert("Exam submitted successfully!");
-            navigate("/submit"); // redirect home
+            navigate("/submit");
         } catch (error) {
             console.error(error);
             alert("Error submitting exam.");
@@ -106,7 +97,7 @@ const TestPage = () => {
                 </div>
 
                 <div className="ml-auto">
-                    <Timer time={exam.examDuration} />
+                    <Timer time={exam.examDuration} onTimeUp={handleSubmit} />
                 </div>
             </div>
 
