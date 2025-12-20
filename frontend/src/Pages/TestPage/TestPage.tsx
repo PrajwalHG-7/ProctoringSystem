@@ -1,7 +1,3 @@
-import { useEffect, useState } from "react";
-import { StartBackend } from "../../aiServices/aiBackendSwitch";
-import useCheatData, { closeWS } from "../../aiServices/CheatData";
-import CheatAlert from "./CheatAlert";
 import Instructions from "./Instructions";
 import Questions from "./Questions";
 import Timer from "./Timer";
@@ -9,19 +5,18 @@ import QuestionNav from "./QuestionNav";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import Camera, { CameraHandle } from "./Camera";
+
 
 const TestPage = () => {
     const { examId } = useParams();
     const navigate = useNavigate();
-
-    const [showAlert, setShowAlert] = useState(false);
-    const [backendStarted, setBackendStarted] = useState(false);
     const [exam, setExam] = useState<any>({});
     const [currentIndex, setCurrentIndex] = useState(0);
+    const cameraRef = useRef<CameraHandle | null>(null);
 
     const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: string }>({});
-
-    const { cheat, cheat_count, cheat_percentage } = useCheatData(backendStarted);
 
     const fetchExamData = async () => {
         try {
@@ -36,39 +31,26 @@ const TestPage = () => {
         fetchExamData();
     }, [examId]);
 
-    useEffect(() => {
-        StartBackend()
-            .then(async () => {
-                console.log("Backend started successfully");
-                setBackendStarted(true);
-            })
-            .catch(console.error);
-
-        return () => closeWS();
-    }, []);
-
-    useEffect(() => {
-        if (cheat) {
-            setShowAlert(true);
-            const timeout = setTimeout(() => setShowAlert(false), 10000);
-            return () => clearTimeout(timeout);
-        }
-    }, [cheat]);
-
     const handleSubmit = async () => {
+        // 🔴 STOP PROCTORING FIRST (CRITICAL)
+        if (cameraRef.current) {
+            cameraRef.current.cleanup();
+        }
+
         if (!exam.questionData) return;
 
         let score = 0;
         exam.questionData.forEach((q: any, index: number) => {
-            if (selectedAnswers[index] === q.correctOption)
+            if (selectedAnswers[index] === q.correctOption) {
                 score += exam.scorePerQuestion;
+            }
         });
 
         try {
             await axiosInstance.post(API_PATHS.STUDENT.SUBMIT_EXAM, {
                 examId,
                 score,
-                cheatCount: cheat_count,
+                cheatCount: 0,
             });
 
             alert("Exam submitted successfully!");
@@ -79,24 +61,19 @@ const TestPage = () => {
         }
     };
 
-    if (showAlert) {
-        return (
-            <CheatAlert
-                cheatCount={cheat_count}
-                cheatPercentage={cheat_percentage}
-                onResume={() => setShowAlert(false)}
-            />
-        );
-    }
 
     return (
         <div className="flex flex-col gap-3 pb-7">
-            <div className="flex w-full items-center relative">
-                <div className="absolute left-1/2 -translate-x-1/2 text-3xl text-primary1 font-semibold">
+            <div className="flex w-full items-center justify-between relative">
+                <div className="ml-40">
+                    <Camera ref={cameraRef} />
+                </div>
+
+                <div className="text-3xl text-primary1 font-semibold">
                     {exam.examName}
                 </div>
 
-                <div className="ml-auto">
+                <div className="">
                     <Timer time={exam.examDuration} onTimeUp={handleSubmit} />
                 </div>
             </div>

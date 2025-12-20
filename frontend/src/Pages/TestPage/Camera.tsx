@@ -1,38 +1,43 @@
-import { useEffect, useRef } from "react"
+import React, { forwardRef, useImperativeHandle } from "react";
+import { useWebcamStream } from "../../hooks/useWebcamStream";
 
-declare global {
-  interface Window {
-    cameraStream?: MediaStream;
-  }
-}
+const WS_URL = "ws://localhost:8000/ws/video";
 
-const Camera = () => {
-    const videoRef = useRef<HTMLVideoElement>(null)
-    useEffect(() => {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then((stream) => {
-                window.cameraStream = stream;
+export type CameraHandle = {
+    cleanup: () => void;
+};
 
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                }
-            })
-            .catch((err) => {
-                console.error('Error accessing the camera:', err);
-            });
+const Camera = forwardRef<CameraHandle>((_, ref) => {
+    const {
+        videoRef,
+        canvasRef,
+        cleanup, // ⬅ exposed from hook
+    } = useWebcamStream(WS_URL);
 
-        return () => {
-            window.cameraStream?.getTracks().forEach(track => track.stop());
-        };
-    }, [])
+    // Expose cleanup to parent (TestPage)
+    useImperativeHandle(ref, () => ({
+        cleanup,
+    }));
 
     return (
         <div className="w-1/3 flex justify-end pr-9">
             <div className="text-bright-sun-500 text-3xl font-bold text-center w-fit border-2 border-bright-sun-400 rounded-lg">
-                <video ref={videoRef} autoPlay playsInline style={{ maxHeight: '87px', borderRadius: '7px' }} />
+                <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    style={{
+                        maxHeight: "87px",
+                        minHeight: "72px",
+                        minWidth: "128px",
+                        maxWidth: "128px",
+                        borderRadius: "7px",
+                    }}
+                />
+                <canvas ref={canvasRef} style={{ display: "none" }} />
             </div>
         </div>
-    )
-}
+    );
+});
 
 export default Camera
