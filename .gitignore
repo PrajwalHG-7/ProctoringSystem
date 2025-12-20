@@ -33,7 +33,6 @@ ENV/
 
 # Jupyter
 .ipynb_checkpoints
-*.ipynb
 
 # =============================
 #       NODE BACKEND
@@ -104,7 +103,7 @@ logs/
 *.avi
 *.mov
 
-datasets/
+# datasets/
 uploads/
 
 #end
