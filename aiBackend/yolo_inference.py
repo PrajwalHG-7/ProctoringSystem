@@ -4,7 +4,7 @@ import numpy as np
 # ------------------------------
 # Model initialization (ONCE)
 # ------------------------------
-yolo_model = YOLO("yolov8n.pt")
+yolo_model = YOLO("models/yolo_exam_best.pt")
 
 # COCO class IDs we care about
 TARGET_CLASSES = {

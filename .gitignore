@@ -102,9 +102,20 @@ logs/
 *.mp4
 *.avi
 *.mov
+*.txt
 
 # datasets/
 uploads/
 
+# COCO annotations
+annotations/
+ml/datasets/**/annotations/
+
+# Dataset caches
+*.cache
+
+# Model weights
+yolo11n.pt
+yolov8n.pt
 
 #end
